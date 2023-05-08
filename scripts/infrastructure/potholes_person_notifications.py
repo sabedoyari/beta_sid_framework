@@ -106,6 +106,11 @@ def potholes_person_notifications():
 
     write_excel(path, 'coordenadas', df2)
 
+    input('Press ENTER to continue...')
+
+    df2 = pd.read_excel('data/raw_data/intervenciones.xlsx',
+                        sheet_name='coordenadas')
+
     data = get_metric_coordinates(df2['latitud'], df2['longitud'])
 
     df2['latitud_metrica'] = data['metric_latitude']
