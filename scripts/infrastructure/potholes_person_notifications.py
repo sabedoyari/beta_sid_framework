@@ -2,7 +2,7 @@ from sid_framework.utils.data_lake.extract_data import HiveFetchData
 from sid_framework.utils.change_files.banned_people import concat_files_xlsx
 from sid_framework.utils.change_files.write_excel import write_excel
 from sid_framework.utils.geographic.clean_address import dane_clean_address
-from sid_framework.utils.geographic.address_geocoding import dane_geocoding
+from sid_framework.utils.geographic.address_geocoding import *
 from sid_framework.utils.geographic.distances_computing import *
 import pandas as pd
 import numpy as np
@@ -85,26 +85,36 @@ def potholes_person_notifications():
 
     raw_df = pd.read_excel(path, sheet_name='programación')
 
-    df2 = pd.DataFrame(
-        {'address': raw_df['dirección'].apply(dane_clean_address)})
+    raw_df = raw_df.rename(columns={'dirección': 'direccion'})
 
-    write_excel(path, 'direcciones', df2)
+    raw_df['id'] = range(1, len(raw_df) + 1)
+
+    raw_df['id'] = raw_df['id'].astype(str)
+
+    raw_df['accion'] = '11111111111'
 
     print('Looking for addresses...')
 
-    df2 = df2['address'].apply(dane_geocoding)
+    df2 = gg_geocoding(raw_df)
 
-    df2 = pd.DataFrame(list(df2))
+    # df2 = pd.DataFrame(
+    #     {'address': raw_df['dirección'].apply(dane_clean_address)})
 
-    df2 = df2.rename(columns={"L": "latitud", "G": "longitud"})
+    write_excel(path, 'direcciones', df2[['dir']])
 
-    df2.dropna(subset=['latitud'], inplace=True)
+    # df2 = df2['address'].apply(dane_geocoding)
 
-    df2 = df2[['longitud', 'latitud']]
+    # df2 = pd.DataFrame(list(df2))
 
-    df2 = df2.apply(pd.to_numeric, errors='coerce')
+    # df2 = df2.rename(columns={"L": "latitud", "G": "longitud"})
 
-    write_excel(path, 'coordenadas', df2)
+    # df2.dropna(subset=['latitud'], inplace=True)
+
+    # df2 = df2[['longitud', 'latitud']]
+
+    # df2 = df2.apply(pd.to_numeric, errors='coerce')
+
+    write_excel(path, 'coordenadas', df2[['latitud', 'longitud']])
 
     input('Press ENTER to continue...')
 

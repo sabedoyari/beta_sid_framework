@@ -18,30 +18,48 @@ if __name__ == '__main__':
     # if args.job == "geocoding":
     #     print(dane_geocoding(**input))
 
-    # df = potholes_person_notifications()
+        df = potholes_person_notifications()
 
-    # print(df.head())
+        print(df.head())
 
     # Crear DataFrame de pruebas
-    # data = {'number': [573218769571, 573214942488],
-    #         'nombre': ['Luis Felipe', 'Santiago'],
-    #         'barrio': ['Jesús Nazareno', 'Calle Larga']}
-    # df = pd.DataFrame(data)
+    #     data = {'number': [573218769571],  # , 573214942488
+    #             'nombre': ['Luis Felipe'],  # , 'Santiago'
+    #             'barrio': ['Jesús Nazareno']}  # , 'Calle Larga'
+    #     df = pd.DataFrame(data)
 
-    df = pd.read_csv('data/processed_data/20230508_message1.csv')
+#     df = pd.read_csv('data/processed_data/20230512_message1.csv')
 
-    me = {'nombres': 'Luis',
-          'celular': 573218769571,
-          'nombre_barrio': 'Jesús Nazareno',
-          'nombre_comuna': 'La Candelaria'}
-    df = df.append(me, ignore_index=True)
+#     me = {'nombres': 'Luis',
+#           'celular': 573218769571,
+#           'nombre_barrio': 'Jesús Nazareno',
+#           'nombre_comuna': 'La Candelaria'}
+#     df = df.append(me, ignore_index=True)
 
-    # print(df.head())
+#     df = df.rename(columns={'nombres': 'nombre',
+#                             'celular': 'number',
+#                             'nombre_barrio': 'barrio'})
 
-    # Una vez potholes_person_notifications corra se podrá ejecutar con la df generada
+#     df = df.drop(columns=['nombre_comuna'])
+
+#     print(len(df))
+
+#     print(df.head())
+
+    #     # Una vez potholes_person_notifications corra se podrá ejecutar con la df generada
 
     # Mensaje 1
-    send_message(df, 'huecos', 3609, '20230508_message1')
+#     send_message(df=df,
+#                  name='huecos',
+#                  template_id=3609,
+#                  contact_list_name='20230512_message1',
+#                  day='12-05-2023',
+#                  time='12:00')
 
     # Mensaje 2
-    # send_message(df, 'huecos_mensaje2', 3640, 'prueba_local_8')
+    # send_message(df=df,
+    #             name='huecos_mensaje2',
+    #             template_id=3640,
+    #             contact_list_name='prueba_local_8',
+    #             day='10-05-2023',
+    #             time='22:00')

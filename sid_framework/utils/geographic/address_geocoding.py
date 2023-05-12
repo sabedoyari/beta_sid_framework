@@ -1,4 +1,6 @@
 import requests
+import json
+import pandas as pd
 
 DANE_GEOPORTAL_ENDPOINT = "https://geoportal.dane.gov.co/laboratorio/serviciosjson/buscador/searchAddress.php"
 
@@ -39,3 +41,29 @@ def dane_geocoding(address, code_department='05', code_city='001', rows_threshol
 
     except Exception as e:
         print(f'Process has failed, due {e}')
+
+
+def gg_geocoding(df):
+    json_data = df.to_json(orient="records")
+
+    url = "http://10.1.220.242/consultaPEEApi/consulta/jsonDir"
+
+    parsed = json.loads(json_data)
+
+    payload = json.dumps(parsed, indent=2)
+
+    headers = {
+        'user': 'datos',
+        'pass': 'hfy7846*47',
+        'Content-Type': 'application/json',
+    }
+
+    response = requests.request("POST", url, headers=headers, data=payload)
+
+    response = json.loads(response.text)
+    response = pd.json_normalize(response)
+    response = response[['dir', 'latitud', 'longitud']]
+
+    response.to_csv('data/lats_and_lons.csv', index=False)
+
+    return response
